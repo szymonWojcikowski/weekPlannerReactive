@@ -1,7 +1,5 @@
 .idea
 *.*~
 node_modules
-/trash
-/js
 app.js
-/src/index.html
+src/index.html
