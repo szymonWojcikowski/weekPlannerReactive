@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/WeekPlannerApp.jsx");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/App.jsx");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -24597,10 +24597,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./src/WeekPlannerApp.jsx":
-/*!********************************!*\
-  !*** ./src/WeekPlannerApp.jsx ***!
-  \********************************/
+/***/ "./src/App.jsx":
+/*!*********************!*\
+  !*** ./src/App.jsx ***!
+  \*********************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -24654,34 +24654,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var WeekPlannerApp =
+var App =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(WeekPlannerApp, _React$Component);
+  _inherits(App, _React$Component);
 
-  function WeekPlannerApp(props) {
+  function App(props) {
     var _this;
 
-    _classCallCheck(this, WeekPlannerApp);
+    _classCallCheck(this, App);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(WeekPlannerApp).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDelete", function (day) {
       return function (toDel) {
-        console.log("Skasujmy coś"); //console.log("Skasujmy coś, najlepiej ", event.target.parentElement.parentElement);
-        //const toDel = event.target.parentElement.parentElement.dataset.id;
-        // const day = event.target.parentElement.parentElement.parentElement.dataset.day;
-
         _this.setState(function (prevState) {
-          var newDays = _toConsumableArray(prevState.days);
+          var newDays = _toConsumableArray(prevState.days); // console.log(`Skasuj zadanie o id ${toDel} w dniu ${day}, możliwe dni ${newDays}`);
+          // console.log("Nasz------", newDays[day], newDays, day, event.target);
+          // days[day].filter( item => !toDel.includes(item.id) );
 
-          console.log("Skasuj zadanie o id ".concat(toDel, " w dniu ").concat(day, ", mo\u017Cliwe dni ").concat(newDays));
-          console.log("Nasz------", newDays[day], newDays, day, event.target); // days[day].filter( item => !toDel.includes(item.id) );
 
           newDays[day] = newDays[day].filter(function (item) {
             return item.id != toDel;
-          });
-          console.log("NEW days ", newDays); // filter(item => !toDel.includes(item.id));
+          }); // console.log("NEW days ", newDays);
+          // filter(item => !toDel.includes(item.id));
 
           return {
             days: newDays
@@ -24692,36 +24688,64 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSelected", function (day) {
       return function (toPush) {
-        console.log("Zaznaczone");
-
+        // console.log("Zaznaczone");
         _this.setState(function (prevState) {
           var toAction = _toConsumableArray(prevState.days);
 
           var selectedTask = toAction[day].find(function (item) {
             return item.id == toPush;
-          });
-          console.warn("===== Selected to action before =====", selectedTask, toAction, day, event.target);
-          selectedTask.selected === true ? selectedTask.selected = false : selectedTask.selected = true;
-          console.warn("===== Selected to action after=====", selectedTask); //----New--setting--task--to--selected----
+          }); //console.warn("===== Selected to action before =====", selectedTask, toAction, day, event.target);
 
-          var x = toAction.map(function (day) {
-            console.log("DAY:", day);
+          selectedTask.selected === true ? selectedTask.selected = false : selectedTask.selected = true; //console.warn("===== Selected to action after=====", selectedTask);
+          //----New--setting--task--to--selected----
+
+          var newDays = toAction.map(function (day) {
+            //console.log("DAY:", day);
             var y = day.map(function (item) {
-              console.log("ITEM:", item.id, selectedTask.id);
-
+              //console.log("ITEM:", item.id, selectedTask.id);
               if (item.id === selectedTask.id) {
-                console.log("Warunek:", item);
+                //console.log("Warunek:", item);
                 return selectedTask;
               }
 
               return item;
             });
             return y;
-          });
-          console.log("toAction po map", x); //---------------------
+          }); //console.log("toAction po map", x);
+          //---------------------
 
           return {
-            days: x
+            days: newDays
+          };
+        });
+      };
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onEdit", function (day) {
+      return function (toEdit) {
+        console.log("Zedytowano");
+
+        _this.setState(function (prevState) {
+          var daysToAction = _toConsumableArray(prevState.days);
+
+          var taskToEdit = daysToAction[day].find(function (item) {
+            return item.id == toEditPush;
+          });
+          var newDays = daysToAction.map(function (day) {
+            //console.log("DAY:", day);
+            var newItem = day.map(function (item) {
+              //console.log("ITEM:", item.id, selectedTask.id);
+              if (item.id === taskToEdit.id) {
+                //console.log("Warunek:", item);
+                return taskToEdit;
+              }
+
+              return item;
+            });
+            return newItem;
+          });
+          return {
+            days: newDays
           };
         });
       };
@@ -24746,8 +24770,7 @@ function (_React$Component) {
         // const taskName = prevState.taskName;
         // const taskPriority = prevState.taskPriority;
         // const estimatedTime = prevState.estimatedTime;
-
-        console.log("Idiki: ", id); // -!!-> tworzymy nowy obiekt currentDay, w którym przypisujemy kluczom
+        // -!!-> tworzymy nowy obiekt currentDay, w którym przypisujemy kluczom
         // wartości zmiennych o takich samych nazwach jak klucze
 
         var currentDay = {
@@ -24762,8 +24785,8 @@ function (_React$Component) {
         //     taskPriority: taskPriority
         //     estimatedTime: estimatedTime
         // }
+        // console.error("Obiekt do dodania currentDay ", currentDay);
 
-        console.error("Obiekt do dodania currentDay ", currentDay);
         newDays[prevState.dayIndex].push(currentDay);
         return {
           days: newDays,
@@ -24775,39 +24798,47 @@ function (_React$Component) {
         openAddFormClicked: false
       }) : _this.setState({
         openAddFormClicked: true
-      }); //console.warn("Obiekt do dodania", taskArr);
+      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "moveTask", function (backward) {
       // backward === true
-      console.log("go to day before");
-
+      // console.log("go to day before");
       _this.setState(function (prevState) {
         var newDays = _toConsumableArray(prevState.days);
 
-        backward ? newDays.reverse() : newDays;
-        console.log("REVERSED", newDays);
+        backward ? newDays.reverse() : newDays; // console.log("REVERSED", newDays);
+
         var toMoveTab = [];
         newDays = newDays.map(function (day, index) {
-          var _toMoveTab;
+          // console.log("iNDEx ", index);
+          if (index < 6) {
+            var newDay = day.filter(function (task) {
+              return task.selected != true;
+            });
+            newDay = [].concat(_toConsumableArray(newDay), _toConsumableArray(toMoveTab));
+            var toMove = day.filter(function (task) {
+              return task.selected == true;
+            }); // console.log("toMove", toMove);
 
-          var newDay = day.filter(function (task) {
-            return task.selected != true;
-          });
-          newDay = [].concat(_toConsumableArray(newDay), _toConsumableArray(toMoveTab));
-          var toMove = day.filter(function (task) {
-            return task.selected == true;
-          });
-          toMoveTab = [];
+            toMoveTab = _toConsumableArray(toMove);
+            toMove.forEach(function (task) {
+              return task.selected = false;
+            }); // console.log("ND ", newDay);
 
-          (_toMoveTab = toMoveTab).push.apply(_toMoveTab, _toConsumableArray(toMove));
+            return newDay;
+          } else if (index === 6) {
+            var _newDay = [].concat(_toConsumableArray(day), _toConsumableArray(toMoveTab));
 
-          toMove.map(function (task) {
-            return task.selected = false;
-          });
-          return newDay;
-        });
-        console.log("Moving tasks newDays ", newDays);
+            _newDay.forEach(function (task) {
+              return task.selected = false;
+            }); // console.log("ND ", newDay);
+
+
+            return _newDay;
+          }
+        }); // console.log("Moving tasks newDays ", newDays);
+
         backward ? newDays.reverse() : newDays;
         return {
           days: newDays
@@ -24853,7 +24884,7 @@ function (_React$Component) {
     return _this;
   }
 
-  _createClass(WeekPlannerApp, [{
+  _createClass(App, [{
     key: "handleClick",
     value: function handleClick(event) {
       //const {name, value} = event.target;
@@ -24862,8 +24893,7 @@ function (_React$Component) {
         openAddFormClicked: false
       }) : this.setState({
         openAddFormClicked: true
-      });
-      console.log(this.state.openAddFormClicked);
+      }); //console.log(this.state.openAddFormClicked);
     }
   }, {
     key: "handleT",
@@ -24876,20 +24906,13 @@ function (_React$Component) {
   }, {
     key: "handleChange",
     value: function handleChange(event) {
-      this.setState(_defineProperty({}, event.target.name, event.target.value));
-      console.log("change ", event);
-      console.log("state ", this.state);
+      this.setState(_defineProperty({}, event.target.name, event.target.value)); // console.log("change ", event);
+      // console.log("state ", this.state);
     }
   }, {
     key: "removeSelected",
-    // to co niżej
-    // handleDelete = (a) => {
-    //     return (b) => {
-    //
-    //     }
-    // };
     value: function removeSelected(event) {
-      console.log("removing selected");
+      // console.log("removing selected");
       this.setState(function (prevState) {
         var newDays = _toConsumableArray(prevState.days);
 
@@ -24898,13 +24921,19 @@ function (_React$Component) {
             return task.selected != true;
           });
           return newD;
-        });
-        console.log("REM newDays ", newDays);
+        }); // console.log("REM newDays ", newDays);
+
         return {
           days: newDays
         };
       });
-    }
+    } // to co niżej
+    // handleDelete = (a) => {
+    //     return (b) => {
+    //
+    //     }
+    // };
+
   }, {
     key: "clearLocalStorage",
     value: function clearLocalStorage() {
@@ -24920,9 +24949,8 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log("-Days-", this.state.days);
-      console.log("-Depot-", this.state.depot); //console.log('Dodano zadanie ', this.state.taskName, this.state.dayIndex);
-
+      // console.log("-Days-", this.state.days);
+      // console.log("-Depot-", this.state.depot);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         onKeyDown: this.handleT
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -24940,7 +24968,8 @@ function (_React$Component) {
       }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PlansSection_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
         days: this.state.days,
         handleDelete: this.handleDelete,
-        handleSelected: this.handleSelected
+        handleSelected: this.handleSelected,
+        onEdit: this.onEdit
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Footer_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
         removeSelected: this.removeSelected,
         moveForward: this.moveForward,
@@ -24951,13 +24980,31 @@ function (_React$Component) {
     }
   }]);
 
-  return WeekPlannerApp;
+  return App;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component); //--------------components rendering--------------
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WeekPlannerApp, null), document.getElementById('app'));
-});
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById('app'));
+}); // handleSelected2 = day => toPush => {
+//     console.log("Zaznaczone");
+//
+//     this.setState( prevState => {
+//         let toDepot = prevState.days;
+//         toDepot = toDepot[day].filter( item => item.id == toPush );
+//         console.warn("Selected to depot------ /n ::::", toDepot[day], toDepot, day, event.target);
+//
+//         //----New--setting--task--to--selected----
+//         toDepot.map( item => {
+//             item.selected === true ? item.selected = false : item.selected = true;
+//         });
+//         //---------------------
+//
+//         return ({
+//              depot: [...prevState.depot, ...toDepot]
+//         })
+//     });
+// };
 
 /***/ }),
 
@@ -25035,19 +25082,24 @@ function (_React$Component) {
         name: "taskName",
         placeholder: "Name the task",
         onChange: this.props.handleChange //onInput={event => event.target.value}
-
+        ,
+        maxLength: "20"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Task priority", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "number",
         value: this.props.taskPriority,
         name: "taskPriority",
         placeholder: "Task priority",
-        onChange: this.props.handleChange
+        onChange: this.props.handleChange,
+        min: "0",
+        max: "9"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Estimated time", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "number",
         value: this.props.estimatedTime,
         name: "estimatedTime",
         placeholder: "Estimated time",
-        onChange: this.props.handleChange
+        onChange: this.props.handleChange,
+        min: "0",
+        max: "12"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
         value: this.props.dayIndex,
         name: "dayIndex",
@@ -25155,7 +25207,8 @@ function (_React$Component) {
           estimatedTime: item.estimatedTime,
           selected: item.selected,
           handleDelete: _this.props.handleDelete(_this.props.dataDay),
-          handleSelected: _this.props.handleSelected(_this.props.dataDay)
+          handleSelected: _this.props.handleSelected(_this.props.dataDay),
+          onEdit: _this.props.onEdit(_this.props.dataDay)
         });
       }));
     }
@@ -25222,9 +25275,7 @@ var TaskCounter = function TaskCounter() {
 };
 
 var Footer = function Footer(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA9Copyright 2019"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RemoveFinishedTasksButton, {
-    removeSelected: props.removeSelected
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MoveBackward, {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA9Copyright 2019"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MoveBackward, {
     moveBackward: function moveBackward() {
       return props.moveTask(true);
     }
@@ -25232,9 +25283,11 @@ var Footer = function Footer(props) {
     moveForward: function moveForward() {
       return props.moveTask(false);
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Save, {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TaskCounter, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Save, {
     save: props.save
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TaskCounter, null));
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RemoveFinishedTasksButton, {
+    removeSelected: props.removeSelected
+  }));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Footer);
@@ -25259,7 +25312,8 @@ var Header = function Header(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Week Planner"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     onClick: props.handleClick,
     name: "openAddFormClicked",
-    className: "btn"
+    className: "btn",
+    id: "addTaskButton"
   }, "Add Task"));
 };
 
@@ -25278,10 +25332,7 @@ var Header = function Header(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Day_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Day.jsx */ "./src/components/Day.jsx");
-/* harmony import */ var _Task_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Task.jsx */ "./src/components/Task.jsx");
+/* harmony import */ var _Day_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Day.jsx */ "./src/components/Day.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -25302,10 +25353,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+ //import ReactDOM from 'react-dom';
 
-
-
-
+ //import Task from "./Task.jsx";
 
 var PlansSection =
 /*#__PURE__*/
@@ -25345,13 +25395,14 @@ function (_React$Component) {
         className: "week",
         onLoad: this.handleLoad
       }, daysOfWeek.map(function (day, index) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Day_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Day_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
           key: index,
           dataDay: index,
           day: day,
           tasks: _this2.props.days[index],
           handleDelete: _this2.props.handleDelete,
-          handleSelected: _this2.props.handleSelected
+          handleSelected: _this2.props.handleSelected,
+          onEdit: _this2.props.onEdit
         }, day);
       }));
     }
@@ -25393,7 +25444,9 @@ var Task = function Task(props) {
     style: style,
     className: props.selected ? "done" : undefined
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, props.taskName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    className: "descr"
+    className: "descr",
+    contentEditable: "true",
+    onChange: props.onEdit
   }, props.taskPriority), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn selected",
     onClick: function onClick() {

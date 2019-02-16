@@ -51,6 +51,7 @@ body {
 
 .btn {
   min-height: 2rem;
+  height: 10vh;
   min-width: 2rem;
   border: 2px outset #475b63;
   font-family: 'Bangers', cursive;
@@ -58,10 +59,12 @@ body {
   font-size: 1.5rem;
   letter-spacing: 0.2rem;
   background-color: transparent;
-  cursor: pointer; }
+  cursor: pointer;
+  width: calc(100vw / 7 * 1); }
 
 header {
   display: flex;
+  justify-content: space-between;
   background-color: #bce784;
   border-bottom: 4px dashed #475b63;
   height: 10vh; }
@@ -103,11 +106,10 @@ header {
       line-height: 5.71429vh; }
     header #outputHolder #remainingChars.error {
       color: #9e2b25; }
-  header .btn {
-    width: calc(100vw / 7 * 1); }
   header #addTaskButton {
     background-color: #9e2b25;
-    color: #f3e8ee; }
+    color: #f3e8ee;
+    align-self: flex-end; }
   header #daySelect {
     padding-left: 1rem; }
     header #daySelect option {
@@ -201,22 +203,37 @@ footer {
   color: #f3e8ee;
   border-top: 4px dashed #475b63;
   height: 10vh;
-  padding-left: 2vw; }
+  display: flex;
+  justify-content: space-between; }
   footer p {
+    text-indent: 2vw;
     line-height: 10vh;
     font-size: 1.5rem;
     letter-spacing: 1.2rem;
-    float: left; }
+    float: left;
+    display: block;
+    width: calc(100vw / 7 * 2); }
   footer span {
     line-height: 10vh;
     font-size: 1.5rem;
     float: right;
     padding-right: 2vw; }
+  footer .taskCounter {
+    width: calc(100vw / 7 * 1); }
   footer #removeFinishedTasksButton {
     width: calc(100vw / 7 * 1);
     line-height: 10vh;
+    background-color: #9e2b25;
+    color: #f3e8ee; }
+  footer #moveToDayBefore {
     background-color: #348aa7;
-    float: right; }
+    color: #222222; }
+  footer #moveToAnotherDay {
+    background-color: #348aa7;
+    color: #222222; }
+  footer #save {
+    background-color: #bce784;
+    color: #222222; }
 
 
 /*# sourceMappingURL=app.css.map*/
