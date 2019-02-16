@@ -74,7 +74,7 @@ header {
     line-height: 10vh;
     font-size: 3rem;
     letter-spacing: 1rem;
-    color: #348aa7; }
+    color: #358aa6; }
   header input {
     width: calc(100vw / 7 * 1);
     padding: 0 1rem;
@@ -118,6 +118,20 @@ header {
 section.week {
   height: 80vh;
   display: flex; }
+  section.week .day:nth-of-type(1):before {
+    content: "Monday"; }
+  section.week .day:nth-of-type(2):before {
+    content: "Tuesday"; }
+  section.week .day:nth-of-type(3):before {
+    content: "Wednesday"; }
+  section.week .day:nth-of-type(4):before {
+    content: "Thursday"; }
+  section.week .day:nth-of-type(5):before {
+    content: "Friday"; }
+  section.week .day:nth-of-type(6):before {
+    content: "Saturday"; }
+  section.week .day:nth-of-type(7):before {
+    content: "Sunday"; }
   section.week .day {
     width: 100%;
     height: 80vh;
@@ -130,18 +144,40 @@ section.week {
     @media (min-width: 1024px) {
       section.week .day {
         width: calc(100vw / 7); } }
-    section.week .day span {
+    section.week .day:before {
       position: absolute;
       top: 12vh;
       margin-left: 1vw;
       transform-origin: top left;
       transform: rotate(30deg); }
+    section.week .day li[data-color="9"] {
+      background-color: #002b38; }
+    section.week .day li[data-color="8"] {
+      background-color: #075269; }
+    section.week .day li[data-color="7"] {
+      background-color: #137795; }
+    section.week .day li[data-color="6"] {
+      background-color: #2698ba; }
+    section.week .day li[data-color="5"] {
+      background-color: #4daecb; }
+    section.week .day li[data-color="4"] {
+      background-color: #82bdce; }
+    section.week .day li[data-color="3"] {
+      background-color: #b1cfd8; }
+    section.week .day li[data-color="2"] {
+      background-color: #dae4e7; }
+    section.week .day li[data-color="1"] {
+      background-color: #fcfdfd; }
+    section.week .day li[data-color="1"] h1, section.week .day li[data-color="1"] .descr, section.week .day li[data-color="2"] h1, section.week .day li[data-color="2"] .descr, section.week .day li[data-color="3"] h1, section.week .day li[data-color="3"] .descr {
+      color: #475b63; }
+    section.week .day li[data-color="1"] button .fas, section.week .day li[data-color="2"] button .fas, section.week .day li[data-color="3"] button .fas {
+      color: #475b63; }
     section.week .day li {
       position: relative;
       height: 8.33333%;
       box-sizing: border-box;
       border-bottom: 2px dotted #475b63;
-      background-color: #225a6d;
+      background-color: #225a6c;
       writing-mode: horizontal-tb; }
       section.week .day li h1 {
         width: calc(100% - 10vh);
@@ -181,9 +217,9 @@ section.week {
       section.week .day li .btn.delete {
         right: 0vh; }
       section.week .day li .btn.selected {
-        right: 6vh; }
+        right: 1.8rem; }
     section.week .day .done {
-      background-color: #649a1e; }
+      background-color: #649a1e !important; }
 
 .addForm {
   height: 80vh;
@@ -226,10 +262,10 @@ footer {
     background-color: #9e2b25;
     color: #f3e8ee; }
   footer #moveToDayBefore {
-    background-color: #348aa7;
+    background-color: #358aa6;
     color: #222222; }
   footer #moveToAnotherDay {
-    background-color: #348aa7;
+    background-color: #358aa6;
     color: #222222; }
   footer #save {
     background-color: #bce784;

@@ -25083,7 +25083,7 @@ function (_React$Component) {
         placeholder: "Name the task",
         onChange: this.props.handleChange //onInput={event => event.target.value}
         ,
-        maxLength: "20"
+        maxLength: "50"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Task priority", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "number",
         value: this.props.taskPriority,
@@ -25196,7 +25196,7 @@ function (_React$Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "day"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.props.day), this.props.tasks.sort(function (a, b) {
+      }, this.props.tasks.sort(function (a, b) {
         return b.taskPriority - a.taskPriority;
       }).map(function (item, index) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Task_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -25442,12 +25442,9 @@ var Task = function Task(props) {
   };
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
     style: style,
-    className: props.selected ? "done" : undefined
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, props.taskName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    className: "descr",
-    contentEditable: "true",
-    onChange: props.onEdit
-  }, props.taskPriority), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: props.selected ? "done" : undefined,
+    "data-color": props.taskPriority
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, props.taskName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn selected",
     onClick: function onClick() {
       return props.handleSelected(props.id);

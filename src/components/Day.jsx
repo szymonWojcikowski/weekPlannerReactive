@@ -16,7 +16,7 @@ class Day extends React.Component {
         // console.log("state.tasks ", this.state.monday);
         return (
             <ul className="day">
-                <span>{this.props.day}</span>
+                {/*<span>{this.props.day}</span>*/}
                 {this.props.tasks.sort( (a, b) => b.taskPriority - a.taskPriority).map( (item, index) => {
                     return (
                         <Task

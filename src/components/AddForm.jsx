@@ -41,7 +41,7 @@ class AddForm extends React.Component {
                         placeholder="Name the task"
                         onChange={this.props.handleChange}
                         //onInput={event => event.target.value}
-                        maxLength="20"
+                        maxLength="50"
                     />
                 </label>
                 <label>Task priority
