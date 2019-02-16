@@ -1,8 +1,8 @@
 import React from "react";
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 
 import Day from "./Day.jsx";
-import Task from "./Task.jsx";
+//import Task from "./Task.jsx";
 
 class PlansSection extends React.Component {
     constructor(props) {
@@ -34,6 +34,7 @@ class PlansSection extends React.Component {
                                  tasks={this.props.days[index]}
                                  handleDelete={this.props.handleDelete}
                                  handleSelected={this.props.handleSelected}
+                                 onEdit={this.props.onEdit}
                             >
                                     {day}
                                 </Day>)

@@ -4,7 +4,7 @@ const MiniCSS = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: 'development',
-    entry: "./src/WeekPlannerApp.jsx",
+    entry: "./src/App.jsx",
     output: {
         filename: "out.js",
         path: path.resolve(__dirname, ""),

@@ -53,6 +53,7 @@ body {
 
 .btn {
     min-height: 2rem;
+    height: 10vh;
     min-width: 2rem;
     border: 2px outset $colorBorder;
     font-family: 'Bangers', cursive;
@@ -61,10 +62,12 @@ body {
     letter-spacing: 0.2rem;
     background-color: transparent;
     cursor: pointer;
+    @include widthCalc(1, $days);
 }
 
 header {
     display: flex;
+    justify-content: space-between;
     background-color: $colorPrimary;
     border-bottom: 4px dashed $colorBorder;
     height: 10vh;
@@ -112,12 +115,14 @@ header {
             color: $colorError;
         }
     }
-    .btn {
-        @include widthCalc(1, $days);
-    }
+    //.btn {
+    //    @include widthCalc(1, $days);
+    //}
     #addTaskButton {
         background-color: $colorError;
         color: $colorLight;
+        align-self: flex-end;
+        //height: 10vh;
     }
     #daySelect {
         padding-left: 1rem;
@@ -234,12 +239,17 @@ footer {
     color: $colorLight;
     border-top: 4px dashed $colorBorder;
     height: 10vh;
-    padding-left: 2vw;
+    //padding-left: 2vw;
+    display: flex;
+    justify-content: space-between;
     p {
+        text-indent: 2vw;
         line-height: 10vh;
         font-size: 1.5rem;
         letter-spacing: 1.2rem;
         float: left;
+        display: block;
+        @include widthCalc(2, $days);
     }
     span {
         line-height: 10vh;
@@ -247,10 +257,29 @@ footer {
         float: right;
         padding-right: 2vw;
     }
+    .taskCounter {
+        @include widthCalc(1, $days);
+    }
+    button {
+        //float: right;
+    }
     #removeFinishedTasksButton {
         @include widthCalc(1, $days);
         line-height: 10vh;
+        background-color: $colorError;
+        color: $colorLight;
+
+    }
+    #moveToDayBefore {
         background-color: $colorContrast;
-        float: right;
+        color: $colorFont;
+    }
+    #moveToAnotherDay {
+        background-color: $colorContrast;
+        color: $colorFont;
+    }
+    #save {
+        background-color: $colorPrimary;
+        color: $colorFont;
     }
 }

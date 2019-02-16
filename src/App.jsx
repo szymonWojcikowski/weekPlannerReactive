@@ -8,7 +8,7 @@ import AddForm from "./components/AddForm.jsx";
 import PlansSection from "./components/PlansSection.jsx";
 import Footer from "./components/Footer.jsx";
 
-class WeekPlannerApp extends React.Component {
+class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,7 +61,7 @@ class WeekPlannerApp extends React.Component {
         //const {name, value} = event.target;
         event.preventDefault();
         this.state.openAddFormClicked ? this.setState({openAddFormClicked: false}) : this.setState({openAddFormClicked: true});
-        console.log(this.state.openAddFormClicked);
+        //console.log(this.state.openAddFormClicked);
     };
 
     handleT(event) {
@@ -73,9 +73,26 @@ class WeekPlannerApp extends React.Component {
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
-        console.log("change ", event);
-        console.log("state ", this.state);
+        // console.log("change ", event);
+        // console.log("state ", this.state);
     };
+
+
+    removeSelected(event) {
+        // console.log("removing selected");
+        this.setState( prevState => {
+            let newDays = [...prevState.days];
+            newDays = newDays.map( day => {
+                let newD = day.filter( task => task.selected != true);
+                return newD;
+            });
+            // console.log("REM newDays ", newDays);
+            return ({
+                days: newDays
+            })
+            }
+        );
+    }
 
     // to co niżej
     // handleDelete = (a) => {
@@ -84,38 +101,15 @@ class WeekPlannerApp extends React.Component {
     //     }
     // };
 
-    removeSelected(event) {
-        console.log("removing selected");
-        this.setState( prevState => {
-            let newDays = [...prevState.days];
-            newDays = newDays.map( day => {
-                let newD = day.filter( task => task.selected != true);
-                return newD;
-            });
-            console.log("REM newDays ", newDays);
-            return ({
-                days: newDays
-            })
-            }
-        );
-    }
-
-
     handleDelete = day => toDel =>  {
-        console.log("Skasujmy coś");
-        //console.log("Skasujmy coś, najlepiej ", event.target.parentElement.parentElement);
-        //const toDel = event.target.parentElement.parentElement.dataset.id;
-       // const day = event.target.parentElement.parentElement.parentElement.dataset.day;
-
         this.setState( prevState => {
             let newDays = [...prevState.days];
-            console.log(`Skasuj zadanie o id ${toDel} w dniu ${day}, możliwe dni ${newDays}`);
-            console.log("Nasz------", newDays[day], newDays, day, event.target);
+            // console.log(`Skasuj zadanie o id ${toDel} w dniu ${day}, możliwe dni ${newDays}`);
+            // console.log("Nasz------", newDays[day], newDays, day, event.target);
 
             // days[day].filter( item => !toDel.includes(item.id) );
             newDays[day] = newDays[day].filter( item => item.id != toDel );
-            console.log("NEW days ", newDays);
-
+            // console.log("NEW days ", newDays);
             // filter(item => !toDel.includes(item.id));
 
             return ({
@@ -125,22 +119,22 @@ class WeekPlannerApp extends React.Component {
     };
 
     handleSelected = day => toPush => {
-        console.log("Zaznaczone");
+        // console.log("Zaznaczone");
 
         this.setState( prevState => {
             let toAction = [...prevState.days];
             let selectedTask = toAction[day].find( item => item.id == toPush );
-            console.warn("===== Selected to action before =====", selectedTask, toAction, day, event.target);
+            //console.warn("===== Selected to action before =====", selectedTask, toAction, day, event.target);
             selectedTask.selected === true ? selectedTask.selected = false : selectedTask.selected = true;
-            console.warn("===== Selected to action after=====", selectedTask);
+            //console.warn("===== Selected to action after=====", selectedTask);
 
             //----New--setting--task--to--selected----
-            let x = toAction.map( day => {
-                console.log("DAY:", day);
+            let newDays = toAction.map( day => {
+                //console.log("DAY:", day);
                 let y = day.map( item => {
-                    console.log("ITEM:", item.id, selectedTask.id);
+                    //console.log("ITEM:", item.id, selectedTask.id);
                     if (item.id === selectedTask.id) {
-                        console.log("Warunek:", item);
+                        //console.log("Warunek:", item);
 
                         return selectedTask;
                     }
@@ -148,34 +142,43 @@ class WeekPlannerApp extends React.Component {
                 });
                 return y;
             });
-            console.log("toAction po map", x);
+            //console.log("toAction po map", x);
             //---------------------
 
             return ({
-                days: x
+                days: newDays
             })
         });
     };
 
-    // handleSelected2 = day => toPush => {
-    //     console.log("Zaznaczone");
-    //
-    //     this.setState( prevState => {
-    //         let toDepot = prevState.days;
-    //         toDepot = toDepot[day].filter( item => item.id == toPush );
-    //         console.warn("Selected to depot------ /n ::::", toDepot[day], toDepot, day, event.target);
-    //
-    //         //----New--setting--task--to--selected----
-    //         toDepot.map( item => {
-    //             item.selected === true ? item.selected = false : item.selected = true;
-    //         });
-    //         //---------------------
-    //
-    //         return ({
-    //              depot: [...prevState.depot, ...toDepot]
-    //         })
-    //     });
-    // };
+    onEdit = day => toEdit => {
+        console.log("Zedytowano");
+        this.setState( prevState => {
+            let daysToAction = [...prevState.days];
+            let taskToEdit = daysToAction[day].find( item => item.id == toEditPush );
+
+            let newDays = daysToAction.map( day => {
+                //console.log("DAY:", day);
+                let newItem = day.map( item => {
+                    //console.log("ITEM:", item.id, selectedTask.id);
+                    if (item.id === taskToEdit.id) {
+                        //console.log("Warunek:", item);
+
+                        return taskToEdit;
+                    }
+                    return item;
+                });
+                return newItem;
+            });
+
+            return ({
+                days: newDays
+            })
+        });
+
+
+    };
+
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -192,8 +195,6 @@ class WeekPlannerApp extends React.Component {
             // const taskName = prevState.taskName;
             // const taskPriority = prevState.taskPriority;
             // const estimatedTime = prevState.estimatedTime;
-            console.log("Idiki: ", id);
-
 
             // -!!-> tworzymy nowy obiekt currentDay, w którym przypisujemy kluczom
             // wartości zmiennych o takich samych nazwach jak klucze
@@ -205,7 +206,7 @@ class WeekPlannerApp extends React.Component {
             //     estimatedTime: estimatedTime
             // }
 
-            console.error("Obiekt do dodania currentDay ", currentDay);
+            // console.error("Obiekt do dodania currentDay ", currentDay);
             newDays[prevState.dayIndex].push(currentDay);
 
             return ({
@@ -214,27 +215,37 @@ class WeekPlannerApp extends React.Component {
             })
         });
         this.state.openAddFormClicked ? this.setState({openAddFormClicked: false}) : this.setState({openAddFormClicked: true});
-        //console.warn("Obiekt do dodania", taskArr);
     };
 
     moveTask = (backward) => { // backward === true
-        console.log("go to day before");
+        // console.log("go to day before");
         this.setState( prevState => {
                 let newDays = [...prevState.days];
                 backward ? newDays.reverse() : newDays;
-                console.log("REVERSED", newDays);
+                // console.log("REVERSED", newDays);
                 let toMoveTab = [];
                 newDays = newDays.map( (day, index) => {
-                    let newDay = day.filter( task => task.selected != true);
-                    newDay = [...newDay, ...toMoveTab];
+                    // console.log("iNDEx ", index);
+                    if (index < 6) {
+                        let newDay = day.filter( task => task.selected != true );
+                        newDay = [...newDay, ...toMoveTab];
 
-                    let toMove = day.filter( task => task.selected == true);
-                    toMoveTab = [];
-                    toMoveTab.push(...toMove);
-                    toMove.map( task => task.selected = false);
-                    return newDay;
+                        let toMove = day.filter( task => task.selected == true );
+                        // console.log("toMove", toMove);
+                        toMoveTab = [...toMove];
+                        toMove.forEach( task => task.selected = false );
+                        // console.log("ND ", newDay);
+                        return newDay;
+                    } else if (index === 6 ) {
+                        const newDay = [...day, ...toMoveTab];
+                        newDay.forEach( task => task.selected = false );
+                        // console.log("ND ", newDay);
+                        return newDay;
+                    }
+
+
                 });
-                console.log("Moving tasks newDays ", newDays);
+                // console.log("Moving tasks newDays ", newDays);
                 backward ? newDays.reverse() : newDays;
                 return ({
                     days: newDays
@@ -254,12 +265,9 @@ class WeekPlannerApp extends React.Component {
     };
 
 
-
     render() {
-        console.log("-Days-", this.state.days);
-        console.log("-Depot-", this.state.depot);
-
-        //console.log('Dodano zadanie ', this.state.taskName, this.state.dayIndex);
+        // console.log("-Days-", this.state.days);
+        // console.log("-Depot-", this.state.depot);
 
         return (
             <div onKeyDown={this.handleT}>
@@ -280,6 +288,7 @@ class WeekPlannerApp extends React.Component {
                     days={this.state.days}
                     handleDelete={this.handleDelete}
                     handleSelected={this.handleSelected}
+                    onEdit={this.onEdit}
                 />}
                 <Footer
                     removeSelected={this.removeSelected}
@@ -297,8 +306,31 @@ class WeekPlannerApp extends React.Component {
 document.addEventListener('DOMContentLoaded',
     function(){
         ReactDOM.render(
-            <WeekPlannerApp />,
+            <App />,
             document.getElementById('app')
         );
     }
 );
+
+
+
+
+// handleSelected2 = day => toPush => {
+//     console.log("Zaznaczone");
+//
+//     this.setState( prevState => {
+//         let toDepot = prevState.days;
+//         toDepot = toDepot[day].filter( item => item.id == toPush );
+//         console.warn("Selected to depot------ /n ::::", toDepot[day], toDepot, day, event.target);
+//
+//         //----New--setting--task--to--selected----
+//         toDepot.map( item => {
+//             item.selected === true ? item.selected = false : item.selected = true;
+//         });
+//         //---------------------
+//
+//         return ({
+//              depot: [...prevState.depot, ...toDepot]
+//         })
+//     });
+// };

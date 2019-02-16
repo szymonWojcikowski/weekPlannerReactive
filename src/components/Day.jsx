@@ -28,6 +28,7 @@ class Day extends React.Component {
                             selected={item.selected}
                             handleDelete={this.props.handleDelete(this.props.dataDay)}
                             handleSelected={this.props.handleSelected(this.props.dataDay)}
+                            onEdit={this.props.onEdit(this.props.dataDay)}
                         />
                     );
                 })}

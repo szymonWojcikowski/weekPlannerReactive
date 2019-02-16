@@ -40,11 +40,13 @@ const Footer = (props) => {
     return (
         <footer>
             <p>&copy;Copyright 2019</p>
-            <RemoveFinishedTasksButton removeSelected={props.removeSelected}/>
-            <MoveBackward moveBackward={() => props.moveTask(true)} />
-            <MoveForward moveForward={() => props.moveTask(false)} />
-            <Save save={props.save} />
+            <div>
+                <MoveBackward moveBackward={() => props.moveTask(true)} />
+                <MoveForward moveForward={() => props.moveTask(false)} />
+            </div>
             <TaskCounter />
+            <Save save={props.save} />
+            <RemoveFinishedTasksButton removeSelected={props.removeSelected}/>
         </footer>
     )
 };

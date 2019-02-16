@@ -15,7 +15,7 @@ const Task = (props) => {
     return (
         <li style={style} className={props.selected ? "done" : undefined}>
             <h1>{props.taskName}</h1>
-            <p className="descr">{props.taskPriority}</p>
+            <p className="descr" contentEditable="true" onChange={props.onEdit}>{props.taskPriority}</p>
             <button className="btn selected"
                     onClick={() => props.handleSelected(props.id)}>
                         <i className="fas fa-check" />

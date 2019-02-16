@@ -41,6 +41,7 @@ class AddForm extends React.Component {
                         placeholder="Name the task"
                         onChange={this.props.handleChange}
                         //onInput={event => event.target.value}
+                        maxLength="20"
                     />
                 </label>
                 <label>Task priority
@@ -50,6 +51,8 @@ class AddForm extends React.Component {
                         name="taskPriority"
                         placeholder="Task priority"
                         onChange={this.props.handleChange}
+                        min="0"
+                        max="9"
                     />
                 </label>
                 <label>Estimated time
@@ -59,6 +62,8 @@ class AddForm extends React.Component {
                         name="estimatedTime"
                         placeholder="Estimated time"
                         onChange={this.props.handleChange}
+                        min="0"
+                        max="12"
                     />
                 </label>
                 <select value={this.props.dayIndex} name="dayIndex" onChange={this.props.handleChange}>
