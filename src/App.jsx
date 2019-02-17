@@ -11,14 +11,14 @@ import Footer from "./components/Footer.jsx";
 class App extends React.Component {
     constructor(props) {
         super(props);
+        const days = this.setDaysFromStorage();
+        const setC = this.setCounter(days);
         this.state = {
             openAddFormClicked: false,
 
-            idCounter: 0,
-
             // properties for taskObjToAdd
             id: 0,
-            taskName: "ble ble",
+            taskName: "",
             taskPriority: 0,
             estimatedTime: 0,
             selected: false,
@@ -26,28 +26,30 @@ class App extends React.Component {
             // where to add
             dayIndex: 0,
 
-            days: [
-                [// day 0
-                //     { // single task
-                //         id: 0,
-                //         taskName: "taskName",
-                //         taskPriority: "3",
-                //         estimatedTime: "4",
-                //         selected: false,
-                //     }
-                ],
-                [], // day 2
-                [],
-                [],
-                [],
-                [],
-                [] // day 6
-            ],
-            depot: [] // id of tasks to move
+            days: days,
+            // JSON.parse(localStorage.getItem("days")) || [
+            //         [// day 0
+            //         //     { // single task
+            //         //         id: 0,
+            //         //         taskName: "taskName",
+            //         //         taskPriority: "3",
+            //         //         estimatedTime: "4",
+            //         //         selected: false,
+            //         //     }
+            //         ],
+            //         [], // day 2
+            //         [],
+            //         [],
+            //         [],
+            //         [],
+            //         [] // day 6
+            //     ],
+            depot: [], // id of tasks to move
+
+            idCounter: setC
         };
 
         this.handleClick = this.handleClick.bind(this);
-        this.handleT = this.handleT.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);// this.state?
         this.handleDelete = this.handleDelete.bind(this);
@@ -55,6 +57,55 @@ class App extends React.Component {
         this.removeSelected = this.removeSelected.bind(this);
         this.saveTaskListToLocalStorage = this.saveTaskListToLocalStorage.bind(this);
         this.clearLocalStorage = this.clearLocalStorage.bind(this);
+
+    };
+
+    setDaysFromStorage() {
+        const daysFromStorageOrTemplate = JSON.parse(localStorage.getItem("days")) || [
+            [// day 0
+                //     { // single task
+                //         id: 0,
+                //         taskName: "taskName",
+                //         taskPriority: "3",
+                //         estimatedTime: "4",
+                //         selected: false,
+                //     }
+            ],
+            [], // day 2
+            [],
+            [],
+            [],
+            [],
+            [] // day 6
+        ];
+
+        return daysFromStorageOrTemplate;
+    }
+
+    setCounter = (days) => {
+        console.log(days);
+        let currentlyBiggest;
+        // if (days[0].length === 0 &&
+        //     days[1].length === 0 &&
+        //     days[2].length === 0 &&
+        //     days[3].length === 0 &&
+        //     days[4].length === 0 &&
+        //     days[5].length === 0 &&
+        //     days[6].length === 0) {
+        //         currentlyBiggest = 0;
+        //     }
+        if (days.every( day => day.length)) {
+            currentlyBiggest = 0;
+        }
+        else {
+            currentlyBiggest = JSON.parse(localStorage.getItem("idCount")) || 0;
+            for (let i = 0; i < days.length; i++) {
+                for (let k = 0; k < days[i].length; k++) {
+                    days[i][k].id > currentlyBiggest ? currentlyBiggest = days[i][k].id : currentlyBiggest;
+                }
+            }
+        }
+        return currentlyBiggest;
     };
 
     handleClick(event) {
@@ -64,21 +115,12 @@ class App extends React.Component {
         //console.log(this.state.openAddFormClicked);
     };
 
-    handleT(event) {
-        // event.preventDefault();
-        if (event.keyCode === 84) {
-            console.log("State na żądanie: ", this.state);
-        }
-    };
-
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
-        // console.log("change ", event);
-        // console.log("state ", this.state);
     };
 
 
-    removeSelected(event) {
+    removeSelected() {
         // console.log("removing selected");
         this.setState( prevState => {
             let newDays = [...prevState.days];
@@ -151,33 +193,31 @@ class App extends React.Component {
         });
     };
 
-    onEdit = day => toEdit => {
-        console.log("Zedytowano");
-        this.setState( prevState => {
-            let daysToAction = [...prevState.days];
-            let taskToEdit = daysToAction[day].find( item => item.id == toEditPush );
-
-            let newDays = daysToAction.map( day => {
-                //console.log("DAY:", day);
-                let newItem = day.map( item => {
-                    //console.log("ITEM:", item.id, selectedTask.id);
-                    if (item.id === taskToEdit.id) {
-                        //console.log("Warunek:", item);
-
-                        return taskToEdit;
-                    }
-                    return item;
-                });
-                return newItem;
-            });
-
-            return ({
-                days: newDays
-            })
-        });
-
-
-    };
+    // onEdit = day => toEdit => {
+    //     console.log("Zedytowano");
+    //     this.setState( prevState => {
+    //         let daysToAction = [...prevState.days];
+    //         let taskToEdit = daysToAction[day].find( item => item.id == toEditPush );
+    //
+    //         let newDays = daysToAction.map( day => {
+    //             //console.log("DAY:", day);
+    //             let newItem = day.map( item => {
+    //                 //console.log("ITEM:", item.id, selectedTask.id);
+    //                 if (item.id === taskToEdit.id) {
+    //                     //console.log("Warunek:", item);
+    //
+    //                     return taskToEdit;
+    //                 }
+    //                 return item;
+    //             });
+    //             return newItem;
+    //         });
+    //
+    //         return ({
+    //             days: newDays
+    //         })
+    //     });
+    // };
 
 
     handleSubmit = (event) => {
@@ -260,8 +300,8 @@ class App extends React.Component {
 
     saveTaskListToLocalStorage() {
         this.clearLocalStorage();
-        localStorage.setItem("tasks", JSON.stringify(this.state.days));
-        localStorage.setItem("idCounter", JSON.stringify(this.state.idCounter));
+        localStorage.setItem("days", JSON.stringify(this.state.days));
+        localStorage.setItem("idCount", JSON.stringify(this.state.idCounter));
     };
 
 

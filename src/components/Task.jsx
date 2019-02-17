@@ -1,11 +1,8 @@
 import React from "react";
-import ReactDOM from 'react-dom';
 
 
 const Task = (props) => {
-    console.log("Propsy w tasku: ", props);
     const { estimatedTime } = props;
-    console.log("czas::::", estimatedTime);
     const sectionWeekHeight = 80;
     const activityHours = 16;
     let style = {

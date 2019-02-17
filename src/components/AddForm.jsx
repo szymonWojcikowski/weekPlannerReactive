@@ -4,31 +4,7 @@ import React from "react";
 class AddForm extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     tasks: props.tasks,
-        //     // taskName: "",
-        //     // taskPriority: 0,
-        //     // value: 0,
-        //     // estimatedTime: 0
-        // };
-        // this.taskName={props.taskName};
-        // this.taskPriority={this.state.taskPriority};
-        // this.dayIndex={this.state.dayIndex};
-        // this.estimatedTime={this.state.estimatedTime};
-        //this.handleSubmit = this.handleSubmit.bind(this);
-        //this.handleChange = this.handleChange.bind(this);
-        //this.handleChange = props.handleChange;
     };
-
-
-
-    // handleSubmit(event) {
-    //
-    //     //console.log('props ', this.props, "tasks from state ", this.state.tasks);
-    //     //event.preventDefault();
-    //     this.props.handleSubmit(event.target.value);
-    //     event.preventDefault();
-    // };
 
     render() {
         return (

@@ -24,13 +24,11 @@ const Save = (props) => {
     )
 };
 
-
-
 const TaskCounter = () => {
     return (
         <div className="taskCounter">
-            <span id="counter">0</span>
-            <span>Tasks:</span>
+            {/*<span id="counter">0</span>*/}
+            {/*<span>Tasks:</span>*/}
         </div>
     )
 };

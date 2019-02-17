@@ -1,16 +1,12 @@
 import React from "react";
-//import ReactDOM from 'react-dom';
-
 import Day from "./Day.jsx";
-//import Task from "./Task.jsx";
+
 
 class PlansSection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             screenSize: window.innerWidth,
-            // days: this.props.days
-
         };
         this.handleLoad = this.handleLoad.bind(this);
     };
@@ -24,7 +20,7 @@ class PlansSection extends React.Component {
 
     render() {
         const daysOfWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-        console.log("render this.state.days in PlansSection", this.props.days);
+        console.log("render this.props.days in PlansSection", this.props.days);
         return (
             <section className="week" onLoad={this.handleLoad}>
                 {daysOfWeek.map((day, index) => {

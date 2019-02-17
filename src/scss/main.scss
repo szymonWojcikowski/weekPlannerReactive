@@ -1,38 +1,7 @@
 @import 'partials/reset';
+@import 'partials/variables';
+@import 'partials/grid-mixins';
 
-$colorPrimary: rgba(188, 231, 132, 1);
-$colorLight: rgba(243, 232, 238, 1);
-$colorContrast: rgb(53, 138, 166);
-$colorFont: rgba(34, 34, 34, 1);
-$colorBorder: rgba(71, 91, 99, 1);
-$colorError: rgba(158, 43, 37, 1);
-
-$tablet-width: 768px;
-$desktop-width: 1024px;
-
-$headerHeight: 10vh;
-
-$days: 7;
-$hoursPerDay: 12;
-
-
-
-
-@mixin widthCalc($number, $days) {
-   width: calc(100vw / #{$days} * #{$number});
-}
-
-@mixin tablet {
-  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
-    @content;
-  }
-}
-
-@mixin desktop {
-  @media (min-width: #{$desktop-width}) {
-    @content;
-  }
-}
 
 html {
     font-size: 10px;
@@ -161,39 +130,10 @@ section.week {
             transform-origin: top left;
             transform: rotate(30deg);
         }
-        //span {
-        //    position: absolute;
-        //    top: 12vh;
-        //    margin-left: 1vw;
-        //    transform-origin: top left;
-        //    transform: rotate(30deg);
-        //}
-        li[data-color="9"] {
-            background-color: hsl(194, 99, 11);
-        }
-        li[data-color="8"] {
-            background-color: hsl(194, 88, 22);
-        }
-        li[data-color="7"] {
-            background-color: hsl(194, 77, 33);
-        }
-        li[data-color="6"] {
-            background-color: hsl(194, 66, 44);
-        }
-        li[data-color="5"] {
-            background-color: hsl(194, 55, 55);
-        }
-        li[data-color="4"] {
-            background-color: hsl(194, 44, 66);
-        }
-        li[data-color="3"] {
-            background-color: hsl(194, 33, 77);
-        }
-        li[data-color="2"] {
-            background-color: hsl(194, 22, 88);
-        }
-        li[data-color="1"] {
-            background-color: hsl(194, 11, 99);
+        @for $i from 1 through 9 {
+            li[data-color="#{$i}"] {
+                background-color: hsl(194, 11*$i, 110-(11*$i));
+            }
         }
         li[data-color="1"],li[data-color="2"],li[data-color="3"] {
             h1, .descr {
@@ -211,10 +151,8 @@ section.week {
             box-sizing: border-box;
             border-bottom: 2px dotted $colorBorder;
             background-color: darken($colorContrast, 15);
-
             writing-mode: horizontal-tb;
             h1 {
-                // width: calc(100% - 8.2vh);
                 width: calc(100% - 10vh);
                 overflow: hidden;
                 box-sizing: border-box;
@@ -224,7 +162,6 @@ section.week {
                 line-height: 1.5rem;
                 letter-spacing: 0.3rem;
                 color: $colorLight;
-                //text-shadow: 1px 1px 1px #000;
             }
             .descr {
                 width: calc(100% - 10vh);
@@ -252,7 +189,6 @@ section.week {
                     display: inline;
                     line-height: 100%;
                     color: $colorLight;
-                    //color: $colorFont;
                 }
             }
             .btn.delete {
@@ -265,7 +201,10 @@ section.week {
         .done {
             background-color: darken($colorPrimary, 35) !important;
         }
-
+    }
+    .day:nth-of-type(6), .day:nth-of-type(7)  {
+        color: darken($colorPrimary, 30);
+        background-color: darken($colorLight, 2);
     }
 }
 
@@ -289,7 +228,6 @@ footer {
     color: $colorLight;
     border-top: 4px dashed $colorBorder;
     height: 10vh;
-    //padding-left: 2vw;
     display: flex;
     justify-content: space-between;
     p {
@@ -310,15 +248,11 @@ footer {
     .taskCounter {
         @include widthCalc(1, $days);
     }
-    button {
-        //float: right;
-    }
     #removeFinishedTasksButton {
         @include widthCalc(1, $days);
         line-height: 10vh;
         background-color: $colorError;
         color: $colorLight;
-
     }
     #moveToDayBefore {
         background-color: $colorContrast;
