@@ -150,24 +150,24 @@ section.week {
       margin-left: 1vw;
       transform-origin: top left;
       transform: rotate(30deg); }
-    section.week .day li[data-color="9"] {
-      background-color: #002b38; }
-    section.week .day li[data-color="8"] {
-      background-color: #075269; }
-    section.week .day li[data-color="7"] {
-      background-color: #137795; }
-    section.week .day li[data-color="6"] {
-      background-color: #2698ba; }
-    section.week .day li[data-color="5"] {
-      background-color: #4daecb; }
-    section.week .day li[data-color="4"] {
-      background-color: #82bdce; }
-    section.week .day li[data-color="3"] {
-      background-color: #b1cfd8; }
-    section.week .day li[data-color="2"] {
-      background-color: #dae4e7; }
     section.week .day li[data-color="1"] {
       background-color: #fcfdfd; }
+    section.week .day li[data-color="2"] {
+      background-color: #dae4e7; }
+    section.week .day li[data-color="3"] {
+      background-color: #b1cfd8; }
+    section.week .day li[data-color="4"] {
+      background-color: #82bdce; }
+    section.week .day li[data-color="5"] {
+      background-color: #4daecb; }
+    section.week .day li[data-color="6"] {
+      background-color: #2698ba; }
+    section.week .day li[data-color="7"] {
+      background-color: #137795; }
+    section.week .day li[data-color="8"] {
+      background-color: #075269; }
+    section.week .day li[data-color="9"] {
+      background-color: #002b38; }
     section.week .day li[data-color="1"] h1, section.week .day li[data-color="1"] .descr, section.week .day li[data-color="2"] h1, section.week .day li[data-color="2"] .descr, section.week .day li[data-color="3"] h1, section.week .day li[data-color="3"] .descr {
       color: #475b63; }
     section.week .day li[data-color="1"] button .fas, section.week .day li[data-color="2"] button .fas, section.week .day li[data-color="3"] button .fas {
@@ -220,6 +220,9 @@ section.week {
         right: 1.8rem; }
     section.week .day .done {
       background-color: #649a1e !important; }
+  section.week .day:nth-of-type(6), section.week .day:nth-of-type(7) {
+    color: #72b022;
+    background-color: #f0e1e9; }
 
 .addForm {
   height: 80vh;

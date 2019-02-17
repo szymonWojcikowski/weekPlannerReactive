@@ -24666,19 +24666,35 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "setCounter", function (days) {
+      console.log(days);
+      var currentlyBiggest;
+
+      if (days.every(function (day) {
+        return day.length;
+      })) {
+        currentlyBiggest = 0;
+      } else {
+        currentlyBiggest = JSON.parse(localStorage.getItem("idCount")) || 0;
+
+        for (var i = 0; i < days.length; i++) {
+          for (var k = 0; k < days[i].length; k++) {
+            days[i][k].id > currentlyBiggest ? currentlyBiggest = days[i][k].id : currentlyBiggest;
+          }
+        }
+      }
+
+      return currentlyBiggest;
+    });
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDelete", function (day) {
       return function (toDel) {
         _this.setState(function (prevState) {
-          var newDays = _toConsumableArray(prevState.days); // console.log(`Skasuj zadanie o id ${toDel} w dniu ${day}, możliwe dni ${newDays}`);
-          // console.log("Nasz------", newDays[day], newDays, day, event.target);
-          // days[day].filter( item => !toDel.includes(item.id) );
-
+          var newDays = _toConsumableArray(prevState.days);
 
           newDays[day] = newDays[day].filter(function (item) {
             return item.id != toDel;
-          }); // console.log("NEW days ", newDays);
-          // filter(item => !toDel.includes(item.id));
-
+          });
           return {
             days: newDays
           };
@@ -24688,61 +24704,22 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSelected", function (day) {
       return function (toPush) {
-        // console.log("Zaznaczone");
         _this.setState(function (prevState) {
           var toAction = _toConsumableArray(prevState.days);
 
           var selectedTask = toAction[day].find(function (item) {
             return item.id == toPush;
-          }); //console.warn("===== Selected to action before =====", selectedTask, toAction, day, event.target);
-
-          selectedTask.selected === true ? selectedTask.selected = false : selectedTask.selected = true; //console.warn("===== Selected to action after=====", selectedTask);
-          //----New--setting--task--to--selected----
-
+          });
+          selectedTask.selected === true ? selectedTask.selected = false : selectedTask.selected = true;
           var newDays = toAction.map(function (day) {
-            //console.log("DAY:", day);
             var y = day.map(function (item) {
-              //console.log("ITEM:", item.id, selectedTask.id);
               if (item.id === selectedTask.id) {
-                //console.log("Warunek:", item);
                 return selectedTask;
               }
 
               return item;
             });
             return y;
-          }); //console.log("toAction po map", x);
-          //---------------------
-
-          return {
-            days: newDays
-          };
-        });
-      };
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onEdit", function (day) {
-      return function (toEdit) {
-        console.log("Zedytowano");
-
-        _this.setState(function (prevState) {
-          var daysToAction = _toConsumableArray(prevState.days);
-
-          var taskToEdit = daysToAction[day].find(function (item) {
-            return item.id == toEditPush;
-          });
-          var newDays = daysToAction.map(function (day) {
-            //console.log("DAY:", day);
-            var newItem = day.map(function (item) {
-              //console.log("ITEM:", item.id, selectedTask.id);
-              if (item.id === taskToEdit.id) {
-                //console.log("Warunek:", item);
-                return taskToEdit;
-              }
-
-              return item;
-            });
-            return newItem;
           });
           return {
             days: newDays
@@ -24785,7 +24762,6 @@ function (_React$Component) {
         //     taskPriority: taskPriority
         //     estimatedTime: estimatedTime
         // }
-        // console.error("Obiekt do dodania currentDay ", currentDay);
 
         newDays[prevState.dayIndex].push(currentDay);
         return {
@@ -24803,15 +24779,12 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "moveTask", function (backward) {
       // backward === true
-      // console.log("go to day before");
       _this.setState(function (prevState) {
         var newDays = _toConsumableArray(prevState.days);
 
-        backward ? newDays.reverse() : newDays; // console.log("REVERSED", newDays);
-
+        backward ? newDays.reverse() : newDays;
         var toMoveTab = [];
         newDays = newDays.map(function (day, index) {
-          // console.log("iNDEx ", index);
           if (index < 6) {
             var newDay = day.filter(function (task) {
               return task.selected != true;
@@ -24819,26 +24792,22 @@ function (_React$Component) {
             newDay = [].concat(_toConsumableArray(newDay), _toConsumableArray(toMoveTab));
             var toMove = day.filter(function (task) {
               return task.selected == true;
-            }); // console.log("toMove", toMove);
-
+            });
             toMoveTab = _toConsumableArray(toMove);
             toMove.forEach(function (task) {
               return task.selected = false;
-            }); // console.log("ND ", newDay);
-
+            });
             return newDay;
           } else if (index === 6) {
             var _newDay = [].concat(_toConsumableArray(day), _toConsumableArray(toMoveTab));
 
             _newDay.forEach(function (task) {
               return task.selected = false;
-            }); // console.log("ND ", newDay);
-
+            });
 
             return _newDay;
           }
-        }); // console.log("Moving tasks newDays ", newDays);
-
+        });
         backward ? newDays.reverse() : newDays;
         return {
           days: newDays
@@ -24846,33 +24815,43 @@ function (_React$Component) {
       });
     });
 
+    var _days = _this.setDaysFromStorage();
+
+    var setC = _this.setCounter(_days);
+
     _this.state = {
       openAddFormClicked: false,
-      idCounter: 0,
       // properties for taskObjToAdd
       id: 0,
-      taskName: "ble ble",
+      taskName: "",
       taskPriority: 0,
       estimatedTime: 0,
       selected: false,
       // where to add
       dayIndex: 0,
-      days: [[// day 0
-        //     { // single task
-        //         id: 0,
-        //         taskName: "taskName",
-        //         taskPriority: "3",
-        //         estimatedTime: "4",
-        //         selected: false,
-        //     }
-      ], [], // day 2
-      [], [], [], [], [] // day 6
-      ],
-      depot: [] // id of tasks to move
-
+      days: _days,
+      // JSON.parse(localStorage.getItem("days")) || [
+      //         [// day 0
+      //         //     { // single task
+      //         //         id: 0,
+      //         //         taskName: "taskName",
+      //         //         taskPriority: "3",
+      //         //         estimatedTime: "4",
+      //         //         selected: false,
+      //         //     }
+      //         ],
+      //         [], // day 2
+      //         [],
+      //         [],
+      //         [],
+      //         [],
+      //         [] // day 6
+      //     ],
+      depot: [],
+      // id of tasks to move
+      idCounter: setC
     };
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.handleT = _this.handleT.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this))); // this.state?
 
@@ -24885,34 +24864,29 @@ function (_React$Component) {
   }
 
   _createClass(App, [{
+    key: "setDaysFromStorage",
+    value: function setDaysFromStorage() {
+      var daysFromStorageOrTemplate = JSON.parse(localStorage.getItem("days")) || [[], [], [], [], [], [], []];
+      return daysFromStorageOrTemplate;
+    }
+  }, {
     key: "handleClick",
     value: function handleClick(event) {
-      //const {name, value} = event.target;
       event.preventDefault();
       this.state.openAddFormClicked ? this.setState({
         openAddFormClicked: false
       }) : this.setState({
         openAddFormClicked: true
-      }); //console.log(this.state.openAddFormClicked);
-    }
-  }, {
-    key: "handleT",
-    value: function handleT(event) {
-      // event.preventDefault();
-      if (event.keyCode === 84) {
-        console.log("State na żądanie: ", this.state);
-      }
+      });
     }
   }, {
     key: "handleChange",
     value: function handleChange(event) {
-      this.setState(_defineProperty({}, event.target.name, event.target.value)); // console.log("change ", event);
-      // console.log("state ", this.state);
+      this.setState(_defineProperty({}, event.target.name, event.target.value));
     }
   }, {
     key: "removeSelected",
-    value: function removeSelected(event) {
-      // console.log("removing selected");
+    value: function removeSelected() {
       this.setState(function (prevState) {
         var newDays = _toConsumableArray(prevState.days);
 
@@ -24921,8 +24895,7 @@ function (_React$Component) {
             return task.selected != true;
           });
           return newD;
-        }); // console.log("REM newDays ", newDays);
-
+        });
         return {
           days: newDays
         };
@@ -24930,7 +24903,6 @@ function (_React$Component) {
     } // to co niżej
     // handleDelete = (a) => {
     //     return (b) => {
-    //
     //     }
     // };
 
@@ -24943,14 +24915,12 @@ function (_React$Component) {
     key: "saveTaskListToLocalStorage",
     value: function saveTaskListToLocalStorage() {
       this.clearLocalStorage();
-      localStorage.setItem("tasks", JSON.stringify(this.state.days));
-      localStorage.setItem("idCounter", JSON.stringify(this.state.idCounter));
+      localStorage.setItem("days", JSON.stringify(this.state.days));
+      localStorage.setItem("idCount", JSON.stringify(this.state.idCounter));
     }
   }, {
     key: "render",
     value: function render() {
-      // console.log("-Days-", this.state.days);
-      // console.log("-Depot-", this.state.depot);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         onKeyDown: this.handleT
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -25047,31 +25017,11 @@ function (_React$Component) {
   function AddForm(props) {
     _classCallCheck(this, AddForm);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(AddForm).call(this, props)); // this.state = {
-    //     tasks: props.tasks,
-    //     // taskName: "",
-    //     // taskPriority: 0,
-    //     // value: 0,
-    //     // estimatedTime: 0
-    // };
-    // this.taskName={props.taskName};
-    // this.taskPriority={this.state.taskPriority};
-    // this.dayIndex={this.state.dayIndex};
-    // this.estimatedTime={this.state.estimatedTime};
-    //this.handleSubmit = this.handleSubmit.bind(this);
-    //this.handleChange = this.handleChange.bind(this);
-    //this.handleChange = props.handleChange;
+    return _possibleConstructorReturn(this, _getPrototypeOf(AddForm).call(this, props));
   }
 
   _createClass(AddForm, [{
     key: "render",
-    // handleSubmit(event) {
-    //
-    //     //console.log('props ', this.props, "tasks from state ", this.state.tasks);
-    //     //event.preventDefault();
-    //     this.props.handleSubmit(event.target.value);
-    //     event.preventDefault();
-    // };
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "addForm",
@@ -25151,7 +25101,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Task_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Task.jsx */ "./src/components/Task.jsx");
-/* harmony import */ var _PlansSection_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PlansSection.jsx */ "./src/components/PlansSection.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25173,7 +25122,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
 var Day =
 /*#__PURE__*/
 function (_React$Component) {
@@ -25182,17 +25130,13 @@ function (_React$Component) {
   function Day(props) {
     _classCallCheck(this, Day);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Day).call(this, props)); // this.state = {
-    // };
+    return _possibleConstructorReturn(this, _getPrototypeOf(Day).call(this, props)); // this.state = {};
   }
 
   _createClass(Day, [{
     key: "render",
     value: function render() {
       var _this = this;
-
-      console.log("Props ", this.props); // console.log("Tasks ", this.state.tasks);
-      // console.log("state.tasks ", this.state.monday);
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "day"
@@ -25207,8 +25151,8 @@ function (_React$Component) {
           estimatedTime: item.estimatedTime,
           selected: item.selected,
           handleDelete: _this.props.handleDelete(_this.props.dataDay),
-          handleSelected: _this.props.handleSelected(_this.props.dataDay),
-          onEdit: _this.props.onEdit(_this.props.dataDay)
+          handleSelected: _this.props.handleSelected(_this.props.dataDay) // onEdit={this.props.onEdit(this.props.dataDay)}
+
         });
       }));
     }
@@ -25269,9 +25213,7 @@ var Save = function Save(props) {
 var TaskCounter = function TaskCounter() {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "taskCounter"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    id: "counter"
-  }, "0"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Tasks:"));
+  });
 };
 
 var Footer = function Footer(props) {
@@ -25308,7 +25250,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Header = function Header(props) {
-  console.log(props.data.openAddFormClicked);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Week Planner"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     onClick: props.handleClick,
     name: "openAddFormClicked",
@@ -25353,9 +25294,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
- //import ReactDOM from 'react-dom';
 
- //import Task from "./Task.jsx";
+
 
 var PlansSection =
 /*#__PURE__*/
@@ -25369,8 +25309,7 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(PlansSection).call(this, props));
     _this.state = {
-      screenSize: window.innerWidth // days: this.props.days
-
+      screenSize: window.innerWidth
     };
     _this.handleLoad = _this.handleLoad.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
@@ -25390,7 +25329,7 @@ function (_React$Component) {
       var _this2 = this;
 
       var daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-      console.log("render this.state.days in PlansSection", this.props.days);
+      console.log("render this.props.days in PlansSection", this.props.days);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
         className: "week",
         onLoad: this.handleLoad
@@ -25426,15 +25365,10 @@ function (_React$Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-
 
 
 var Task = function Task(props) {
-  console.log("Propsy w tasku: ", props);
   var estimatedTime = props.estimatedTime;
-  console.log("czas::::", estimatedTime);
   var sectionWeekHeight = 80;
   var activityHours = 16;
   var style = {

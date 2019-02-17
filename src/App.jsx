@@ -62,21 +62,13 @@ class App extends React.Component {
 
     setDaysFromStorage() {
         const daysFromStorageOrTemplate = JSON.parse(localStorage.getItem("days")) || [
-            [// day 0
-                //     { // single task
-                //         id: 0,
-                //         taskName: "taskName",
-                //         taskPriority: "3",
-                //         estimatedTime: "4",
-                //         selected: false,
-                //     }
-            ],
-            [], // day 2
             [],
             [],
             [],
             [],
-            [] // day 6
+            [],
+            [],
+            []
         ];
 
         return daysFromStorageOrTemplate;
@@ -85,15 +77,7 @@ class App extends React.Component {
     setCounter = (days) => {
         console.log(days);
         let currentlyBiggest;
-        // if (days[0].length === 0 &&
-        //     days[1].length === 0 &&
-        //     days[2].length === 0 &&
-        //     days[3].length === 0 &&
-        //     days[4].length === 0 &&
-        //     days[5].length === 0 &&
-        //     days[6].length === 0) {
-        //         currentlyBiggest = 0;
-        //     }
+
         if (days.every( day => day.length)) {
             currentlyBiggest = 0;
         }
@@ -109,10 +93,8 @@ class App extends React.Component {
     };
 
     handleClick(event) {
-        //const {name, value} = event.target;
         event.preventDefault();
         this.state.openAddFormClicked ? this.setState({openAddFormClicked: false}) : this.setState({openAddFormClicked: true});
-        //console.log(this.state.openAddFormClicked);
     };
 
     handleChange(event) {
@@ -121,14 +103,13 @@ class App extends React.Component {
 
 
     removeSelected() {
-        // console.log("removing selected");
         this.setState( prevState => {
             let newDays = [...prevState.days];
             newDays = newDays.map( day => {
                 let newD = day.filter( task => task.selected != true);
                 return newD;
             });
-            // console.log("REM newDays ", newDays);
+
             return ({
                 days: newDays
             })
@@ -139,20 +120,13 @@ class App extends React.Component {
     // to co niżej
     // handleDelete = (a) => {
     //     return (b) => {
-    //
     //     }
     // };
 
     handleDelete = day => toDel =>  {
         this.setState( prevState => {
             let newDays = [...prevState.days];
-            // console.log(`Skasuj zadanie o id ${toDel} w dniu ${day}, możliwe dni ${newDays}`);
-            // console.log("Nasz------", newDays[day], newDays, day, event.target);
-
-            // days[day].filter( item => !toDel.includes(item.id) );
             newDays[day] = newDays[day].filter( item => item.id != toDel );
-            // console.log("NEW days ", newDays);
-            // filter(item => !toDel.includes(item.id));
 
             return ({
                 days: newDays
@@ -161,64 +135,26 @@ class App extends React.Component {
     };
 
     handleSelected = day => toPush => {
-        // console.log("Zaznaczone");
-
         this.setState( prevState => {
             let toAction = [...prevState.days];
             let selectedTask = toAction[day].find( item => item.id == toPush );
-            //console.warn("===== Selected to action before =====", selectedTask, toAction, day, event.target);
             selectedTask.selected === true ? selectedTask.selected = false : selectedTask.selected = true;
-            //console.warn("===== Selected to action after=====", selectedTask);
 
-            //----New--setting--task--to--selected----
             let newDays = toAction.map( day => {
-                //console.log("DAY:", day);
                 let y = day.map( item => {
-                    //console.log("ITEM:", item.id, selectedTask.id);
                     if (item.id === selectedTask.id) {
-                        //console.log("Warunek:", item);
-
                         return selectedTask;
                     }
                     return item;
                 });
                 return y;
             });
-            //console.log("toAction po map", x);
-            //---------------------
 
             return ({
                 days: newDays
             })
         });
     };
-
-    // onEdit = day => toEdit => {
-    //     console.log("Zedytowano");
-    //     this.setState( prevState => {
-    //         let daysToAction = [...prevState.days];
-    //         let taskToEdit = daysToAction[day].find( item => item.id == toEditPush );
-    //
-    //         let newDays = daysToAction.map( day => {
-    //             //console.log("DAY:", day);
-    //             let newItem = day.map( item => {
-    //                 //console.log("ITEM:", item.id, selectedTask.id);
-    //                 if (item.id === taskToEdit.id) {
-    //                     //console.log("Warunek:", item);
-    //
-    //                     return taskToEdit;
-    //                 }
-    //                 return item;
-    //             });
-    //             return newItem;
-    //         });
-    //
-    //         return ({
-    //             days: newDays
-    //         })
-    //     });
-    // };
-
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -246,7 +182,6 @@ class App extends React.Component {
             //     estimatedTime: estimatedTime
             // }
 
-            // console.error("Obiekt do dodania currentDay ", currentDay);
             newDays[prevState.dayIndex].push(currentDay);
 
             return ({
@@ -258,34 +193,27 @@ class App extends React.Component {
     };
 
     moveTask = (backward) => { // backward === true
-        // console.log("go to day before");
         this.setState( prevState => {
                 let newDays = [...prevState.days];
                 backward ? newDays.reverse() : newDays;
-                // console.log("REVERSED", newDays);
                 let toMoveTab = [];
                 newDays = newDays.map( (day, index) => {
-                    // console.log("iNDEx ", index);
                     if (index < 6) {
                         let newDay = day.filter( task => task.selected != true );
                         newDay = [...newDay, ...toMoveTab];
 
                         let toMove = day.filter( task => task.selected == true );
-                        // console.log("toMove", toMove);
                         toMoveTab = [...toMove];
                         toMove.forEach( task => task.selected = false );
-                        // console.log("ND ", newDay);
                         return newDay;
                     } else if (index === 6 ) {
                         const newDay = [...day, ...toMoveTab];
                         newDay.forEach( task => task.selected = false );
-                        // console.log("ND ", newDay);
                         return newDay;
                     }
 
 
                 });
-                // console.log("Moving tasks newDays ", newDays);
                 backward ? newDays.reverse() : newDays;
                 return ({
                     days: newDays
@@ -306,9 +234,6 @@ class App extends React.Component {
 
 
     render() {
-        // console.log("-Days-", this.state.days);
-        // console.log("-Depot-", this.state.depot);
-
         return (
             <div onKeyDown={this.handleT}>
                 <Header
